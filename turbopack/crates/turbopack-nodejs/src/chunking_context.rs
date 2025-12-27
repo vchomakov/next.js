@@ -601,13 +601,8 @@ impl ChunkingContext for NodeJsChunkingContext {
             name = display(ident.to_string().await?),
             chunking_type = "evaluated",
         );
-        eprintln!(
-            "Creating an evaluated_chunk_group: {}",
-            ident.to_string().await?
-        );
         async move {
             let entries = chunk_group.entries();
-            eprintln!("About to call make_chunk_group");
             let MakeChunkGroupResult {
                 chunks,
                 referenced_output_assets,
@@ -620,7 +615,6 @@ impl ChunkingContext for NodeJsChunkingContext {
                 input_availability_info,
             )
             .await?;
-            eprintln!("make_chunk_group returned, chunks: {}", chunks.len());
 
             let mut assets: Vec<ResolvedVc<Box<dyn OutputAsset>>> = chunks
                 .iter()

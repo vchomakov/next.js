@@ -19,6 +19,7 @@ use turbopack_core::{
         chunk_group::{MakeChunkGroupResult, make_chunk_group},
         module_id_strategies::{DevModuleIdStrategy, ModuleIdStrategy},
     },
+    context::AssetContext,
     environment::Environment,
     ident::AssetIdent,
     module::Module,
@@ -898,8 +899,14 @@ impl ChunkingContext for BrowserChunkingContext {
     }
 
     #[turbo_tasks::function]
-    fn worker_entrypoint(self: Vc<Self>) -> Vc<Box<dyn OutputAsset>> {
-        Vc::upcast(EcmascriptBrowserWorkerEntrypoint::new(Vc::upcast(self)))
+    fn worker_entrypoint(
+        self: Vc<Self>,
+        asset_context: Vc<Box<dyn AssetContext>>,
+    ) -> Vc<Box<dyn OutputAsset>> {
+        Vc::upcast(EcmascriptBrowserWorkerEntrypoint::new(
+            Vc::upcast(self),
+            asset_context,
+        ))
     }
 }
 

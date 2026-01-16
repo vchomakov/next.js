@@ -849,7 +849,11 @@ export class TurbopackManifestLoader {
     deleteCache(clientMiddlewareManifestPath)
     writeFileAtomic(
       clientMiddlewareManifestPath,
-      JSON.stringify(matchers, null, 2)
+      `self.__MIDDLEWARE_MATCHERS = ${JSON.stringify(
+        matchers,
+        null,
+        2
+      )};self.__MIDDLEWARE_MATCHERS_CB && self.__MIDDLEWARE_MATCHERS_CB()`
     )
   }
 

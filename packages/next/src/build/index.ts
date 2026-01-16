@@ -2712,14 +2712,19 @@ export default async function build(
           }
 
           if (bundler === Bundler.Turbopack) {
-            await writeManifest(
+            await writeFileUtf8(
               path.join(
                 distDir,
                 'static',
                 buildId,
                 TURBOPACK_CLIENT_MIDDLEWARE_MANIFEST
               ),
-              functionsConfigManifest.functions['/_middleware'].matchers || []
+              `self.__MIDDLEWARE_MATCHERS = ${JSON.stringify(
+                functionsConfigManifest.functions['/_middleware'].matchers ||
+                  [],
+                null,
+                2
+              )};self.__MIDDLEWARE_MATCHERS_CB && self.__MIDDLEWARE_MATCHERS_CB()`
             )
           }
         }
